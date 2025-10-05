@@ -1,52 +1,43 @@
 'use client';
 import Image from 'next/image';
-import { useEffect, useRef } from 'react';
+import React from 'react';
 import type { PackMeta } from '@/lib/packs';
 
 export default function MediaBackground({
     data,
     isActive,
-    index
+    index,
 }: { data: PackMeta; isActive: boolean; index: number }) {
-    const vref = useRef<HTMLVideoElement | null>(null);
+    // В некоторых паках можем задать точный сдвиг фона на мобилке:
+    // data.mobilePosY, например '72%' — необязательно
+    const mbPos = (data as any).mobilePosY as string | undefined;
 
-    useEffect(() => {
-        const v = vref.current;
-        if (!v) return;
-        if (isActive) {
-            v.play().catch(() => { }); // автоплей работает т.к. muted
-        } else {
-            v.pause();
-            v.currentTime = 0;
-        }
-    }, [isActive]);
-
-    if (data.video?.srcMp4 || data.video?.srcWebm) {
+    // ВИДЕО
+    if ((data as any).srcMp4) {
         return (
             <video
-                ref={vref}
-                className="absolute inset-0 w-full h-full object-cover"
+                className="h-full w-full object-cover md:object-center bg-mobile-anchor"
+                style={mbPos ? ({ ['--mb-pos' as any]: mbPos } as React.CSSProperties) : undefined}
+                src={(data as any).srcMp4}
+                poster={(data as any).poster || data.background}
                 muted
                 loop
+                autoPlay
                 playsInline
-                preload="metadata"
-                poster={data.video?.poster || data.background}
-            >
-                {data.video?.srcWebm && <source src={data.video.srcWebm} type="video/webm" />}
-                {data.video?.srcMp4 && <source src={data.video.srcMp4} type="video/mp4" />}
-            </video>
+            />
         );
     }
 
-    // fallback — картинка
+    // ИЗОБРАЖЕНИЕ
     return (
         <Image
             src={data.background}
-            alt={data.name}
+            alt=""
             fill
-            sizes="33vw"
-            className="object-cover"
-            priority={index === 0}
+            priority={index < 3}
+            sizes="100vw"
+            className="object-cover md:object-center bg-mobile-anchor select-none"
+            style={mbPos ? ({ ['--mb-pos' as any]: mbPos } as React.CSSProperties) : undefined}
         />
     );
 }

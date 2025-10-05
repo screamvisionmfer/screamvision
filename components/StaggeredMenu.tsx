@@ -560,7 +560,7 @@ const StaggeredMenu: React.FC<StaggeredMenuProps> = ({
   /* подтянуть блок Socials и добавить запас снизу */
   .sm-scope .sm-socials{
     margin-top:auto;
-    padding-bottom:calc(env(safe-area-inset-bottom, 0px) + 24px);
+    padding-bottom:calc(env(safe-area-inset-bottom, 0px) + 44px);
   }
   .sm-scope .sm-socials-link{font-size:1rem}
 }

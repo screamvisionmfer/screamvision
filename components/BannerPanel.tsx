@@ -71,7 +71,7 @@ export default function BannerPanel({ index, activeIndex, setActive, data }: Pro
       onClick={() => setActive(isActive ? null : index)}
       className="relative flex overflow-hidden rounded-xl bg-brand-card cursor-pointer
                  ring-1 ring-white/5 shadow-[inset_0_1px_0_rgba(255,255,255,0.05)]
-                 min-h-[44svh] sm:min-h-[44svh] xl:min-h-0 xl:h-auto"
+                 h-full"
       animate={{ flex: isActive ? 7 : 1 }}
       transition={{ type: 'tween', duration: 0.65, ease: easeSoft }}
       style={{ minWidth: 0 }}

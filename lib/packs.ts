@@ -26,7 +26,7 @@ export const PACKS: PackMeta[] = [
     background: '/packs/shitpixels-bg.jpg',       // важно: здесь изображение, не mp4
     packImage: '/packs/shitpixels.png',
     titleImage: '/titles/shitpixels-title.png',
-    marketUrl: '#',
+    marketUrl: 'https://vibechain.com/market/shitpixels-exe?ref=B3FLA1AGGOH2',
     tags: ['Horror', 'VHS'],
     video: {
       srcWebm: '/packs/shitpixels-bg.webm',
@@ -35,13 +35,13 @@ export const PACKS: PackMeta[] = [
     }
   },
   { slug: 'mfrst', name: 'MFERS STAINS', description: 'Album‑cover tributes remixed into meme culture. Loud, glossy, collectable.', titleImage: '/titles/mfers-title.png',
-    background: '/packs/mfers-bg.jpg', packImage: '/packs/mferstains.png', marketUrl: '#', tags: ['Music','Tribute'] },
+    background: '/packs/mfers-bg.jpg', packImage: '/packs/mferstains.png', marketUrl: 'https://vibechain.com/market/mfers-stains?ref=B3FLA1AGGOH2', tags: ['Music','Tribute'] },
   { slug: 'stray', name: 'STRAY TILL NINE', description: 'Analog horror frames. Lost tapes, dead pixels, and cursed polaroids.', titleImage: '/titles/stray-title.png',
-    background: '/packs/stray-bg.jpg', packImage: '/packs/straytillnine.png', marketUrl: '#', tags: ['Analog','Horror'] },
+    background: '/packs/stray-bg.jpg', packImage: '/packs/straytillnine.png', marketUrl: 'https://vibechain.com/market/stray-till-nine?ref=B3FLA1AGGOH2', tags: ['Analog','Horror'] },
   { slug: 'rcgva', name: 'RIZZ CODED GYATT', description: '3D/cartoon cut‑paper chaos with yellow/black energy. Punk caricature vibe.', titleImage: '/titles/rizz-title.png',
-    background: '/packs/rizz-bg.png', packImage: '/packs/rizz-pack.png', marketUrl: '#', tags: ['3D','Cartoon'] },
+    background: '/packs/rizz-bg.png', packImage: '/packs/rizz-pack.png', marketUrl: 'https://vibechain.com/market/rizz-coded-gyatt?ref=B3FLA1AGGOH2', tags: ['AI','Cartoon'] },
   { slug: 'sbgc', name: 'SKULL BOARD GAME CLUB', description: 'Epic Spells energy: grotesque faces, battle chaos, and wide‑angle drama.', titleImage: '/titles/sbgc-title.png',
-    background: '/packs/sbgc-bg.jpg', packImage: '/packs/sbgc.png', marketUrl: '#', tags: ['Battle','Epic Spells'], video: {
+    background: '/packs/sbgc-bg.jpg', packImage: '/packs/sbgc.png', marketUrl: 'https://vibechain.com/market/skullboardgameclub?ref=B3FLA1AGGOH2', tags: ['Battle','Epic Spells'], video: {
       srcMp4:  '/packs/sbgc-bg.mp4',
       poster:  '/packs/sbgc-bg.jpg'
     }},
