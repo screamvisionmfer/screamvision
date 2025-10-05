@@ -32,3 +32,10 @@ body{
     object-position: center var(--mb-pos, 18%) !important;
   }
 }
+
+
+@keyframes grainShift { from { transform: translate(0,0); } to { transform: translate(-256px,-256px); } }
+.animate-grain { animation: grainShift 1.6s steps(2) infinite; }
+
+@keyframes diag { from { background-position:0 0; } to { background-position:24px 0; } }
+.animate-diag { animation: diag .8s linear infinite; }

@@ -1,14 +1,12 @@
 'use client';
 import BannerRail from '@/components/BannerRail';
 import { PACKS } from '@/lib/packs';
-import { usePagePreloader } from '@/src/hooks/usePagePreloader';
 
 export default function Page() {
-  const { done } = usePagePreloader({ assets: [], minDurationMs: 900 });
-
   return (
-    <section className="w-full h-dvh overflow-hidden">
-      <BannerRail packs={PACKS} reveal={done} />
+    // было: min-h-dvh → из-за этого баннеры не могут стать h-full
+    <section className="w-full h-dvh overflow-x-hidden">
+      <BannerRail packs={PACKS} reveal />
     </section>
   );
 }

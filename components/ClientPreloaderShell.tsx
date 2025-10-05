@@ -1,6 +1,6 @@
 'use client';
 import React from 'react';
-import PreloaderOverlay from '@/components/PreloaderOverlay';
+import PreloaderOverlayPro from '@/components/PreloaderOverlayPro';
 import { usePagePreloader } from '@/src/hooks/usePagePreloader';
 
 type Props = {
@@ -14,7 +14,7 @@ export default function ClientPreloaderShell({ children, assets = [], minDuratio
   const { progress, done } = usePagePreloader({ assets, minDurationMs });
   return (
     <>
-      <PreloaderOverlay done={done} progress={progress} brand={brand} />
+      <PreloaderOverlayPro done={done} progress={progress} brand={brand} />
       <div style={{ opacity: done ? 1 : 0, transition: 'opacity .45s ease-out' }}>{children}</div>
     </>
   );
