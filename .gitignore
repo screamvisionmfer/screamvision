@@ -8,3 +8,4 @@ dist
 # большие файлы — не коммитим
 public.zip
 *.zip
+.next
