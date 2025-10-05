@@ -86,7 +86,9 @@ const StaggeredMenu: React.FC<StaggeredMenuProps> = ({
 
             let preLayers: HTMLElement[] = [];
             if (preContainer) {
-                preLayers = Array.from(preContainer.querySelectorAll('.sm-prelayer')) as HTMLElement[];
+                preLayers = Array.from(
+                    preContainer.querySelectorAll('.sm-prelayer')
+                ) as HTMLElement[];
             }
             preLayerElsRef.current = preLayers;
 
@@ -336,7 +338,10 @@ const StaggeredMenu: React.FC<StaggeredMenuProps> = ({
     }, [playOpen, playClose, animateIcon, animateColor, animateText, onMenuOpen, onMenuClose]);
 
     return (
-        <div className={`sm-scope z-[100] pointer-events-none ${isFixed ? 'fixed top-0 left-0 w-screen h-screen' : 'w-full h-full'}`}>
+        <div
+            className={`sm-scope z-[100] pointer-events-none ${isFixed ? 'fixed top-0 left-0 w-screen h-screen' : 'w-full h-full'
+                }`}
+        >
             <div
                 className={(className ? className + ' ' : '') + 'staggered-menu-wrapper relative w-full h-full z-40'}
                 style={{
@@ -347,7 +352,11 @@ const StaggeredMenu: React.FC<StaggeredMenuProps> = ({
                 data-position={position}
                 data-open={open || undefined}
             >
-                <div ref={preLayersRef} className="sm-prelayers absolute top-0 right-0 bottom-0 pointer-events-none z-[5]" aria-hidden="true">
+                <div
+                    ref={preLayersRef}
+                    className="sm-prelayers absolute top-0 right-0 bottom-0 pointer-events-none z-[5]"
+                    aria-hidden="true"
+                >
                     {(() => {
                         const raw = colors && colors.length ? colors.slice(0, 4) : ['#1e1e22', '#35353c'];
                         let arr = [...raw];
@@ -361,31 +370,58 @@ const StaggeredMenu: React.FC<StaggeredMenuProps> = ({
                     })()}
                 </div>
 
-                {/* header кликабельный */}
-                <header className="staggered-menu-header absolute top-0 left-0 w-full flex items-center justify-between p-[2em] bg-transparent pointer-events-auto z-20">
+                {/* header НЕ перехватывает клики (pointer-events: none), кликабельны только его дети */}
+                <header
+                    className="staggered-menu-header absolute top-0 left-0 w-full flex items-center justify-between p-[2em] bg-transparent pointer-events-none z-20"
+                    aria-label="Main navigation header"
+                >
                     <div className="sm-logo flex items-center select-none pointer-events-auto" aria-label="Logo">
-                        <img src={logoUrl} alt="Logo" className="sm-logo-img block h-8 w-auto object-contain" draggable={false} width={110} height={24} />
+                        <img
+                            src={logoUrl}
+                            alt="Logo"
+                            className="sm-logo-img block h-8 w-auto object-contain"
+                            draggable={false}
+                            width={110}
+                            height={24}
+                        />
                     </div>
 
                     <button
                         ref={toggleBtnRef}
-                        className={`sm-toggle relative inline-flex items-center gap-[0.3rem] bg-transparent border-0 cursor-pointer font-medium leading-none overflow-visible pointer-events-auto ${open ? 'text-black' : 'text-[#e9e9ef]'}`}
+                        className={`sm-toggle relative inline-flex items-center gap-[0.3rem] bg-transparent border-0 cursor-pointer font-medium leading-none overflow-visible pointer-events-auto ${open ? 'text-black' : 'text-[#e9e9ef]'
+                            }`}
                         aria-label={open ? 'Close menu' : 'Open menu'}
                         aria-expanded={open}
                         aria-controls="staggered-menu-panel"
                         onClick={toggleMenu}
                         type="button"
                     >
-                        <span ref={textWrapRef} className="sm-toggle-textWrap relative inline-block h-[1em] overflow-hidden whitespace-nowrap w-[var(--sm-toggle-width,auto)] min-w-[var(--sm-toggle-width,auto)]" aria-hidden="true">
+                        <span
+                            ref={textWrapRef}
+                            className="sm-toggle-textWrap relative inline-block h-[1em] overflow-hidden whitespace-nowrap w-[var(--sm-toggle-width,auto)] min-w-[var(--sm-toggle-width,auto)]"
+                            aria-hidden="true"
+                        >
                             <span ref={textInnerRef} className="sm-toggle-textInner flex flex-col leading-none">
                                 {textLines.map((l, i) => (
-                                    <span className="sm-toggle-line block h-[1em] leading-none" key={i}>{l}</span>
+                                    <span className="sm-toggle-line block h-[1em] leading-none" key={i}>
+                                        {l}
+                                    </span>
                                 ))}
                             </span>
                         </span>
-                        <span ref={iconRef} className="sm-icon relative w-[14px] h-[14px] shrink-0 inline-flex items-center justify-center [will-change:transform]" aria-hidden="true">
-                            <span ref={plusHRef} className="sm-icon-line absolute left-1/2 top-1/2 w-full h-[2px] bg-current rounded-[2px] -translate-x-1/2 -translate-y-1/2 [will-change:transform]" />
-                            <span ref={plusVRef} className="sm-icon-line sm-icon-line-v absolute left-1/2 top-1/2 w-full h-[2px] bg-current rounded-[2px] -translate-x-1/2 -translate-y-1/2 [will-change:transform]" />
+                        <span
+                            ref={iconRef}
+                            className="sm-icon relative w-[14px] h-[14px] shrink-0 inline-flex items-center justify-center [will-change:transform]"
+                            aria-hidden="true"
+                        >
+                            <span
+                                ref={plusHRef}
+                                className="sm-icon-line absolute left-1/2 top-1/2 w-full h-[2px] bg-current rounded-[2px] -translate-x-1/2 -translate-y-1/2 [will-change:transform]"
+                            />
+                            <span
+                                ref={plusVRef}
+                                className="sm-icon-line sm-icon-line-v absolute left-1/2 top-1/2 w-full h-[2px] bg-current rounded-[2px] -translate-x-1/2 -translate-y-1/2 [will-change:transform]"
+                            />
                         </span>
                     </button>
                 </header>
@@ -399,19 +435,32 @@ const StaggeredMenu: React.FC<StaggeredMenuProps> = ({
                     aria-hidden={!open}
                 >
                     <div className="sm-panel-inner flex-1 flex flex-col gap-5">
-                        <ul className="sm-panel-list list-none m-0 p-0 flex flex-col gap-2" role="list" data-numbering={displayItemNumbering || undefined}>
+                        <ul
+                            className="sm-panel-list list-none m-0 p-0 flex flex-col gap-2"
+                            role="list"
+                            data-numbering={displayItemNumbering || undefined}
+                        >
                             {items && items.length ? (
                                 items.map((it, idx) => (
                                     <li className="sm-panel-itemWrap relative overflow-hidden leading-none" key={it.label + idx}>
-                                        <a className="sm-panel-item relative text-black font-semibold text-[4rem] cursor-pointer leading-none tracking-[-2px] uppercase transition-[background,color] duration-150 ease-linear inline-block no-underline pr-[1.4em]" href={it.link} aria-label={it.ariaLabel} data-index={idx + 1}>
-                                            <span className="sm-panel-itemLabel inline-block [transform-origin:50%_100%] will-change-transform">{it.label}</span>
+                                        <a
+                                            className="sm-panel-item relative text-black font-semibold text-[4rem] cursor-pointer leading-none tracking-[-2px] uppercase transition-[background,color] duration-150 ease-linear inline-block no-underline pr-[1.4em]"
+                                            href={it.link}
+                                            aria-label={it.ariaLabel}
+                                            data-index={idx + 1}
+                                        >
+                                            <span className="sm-panel-itemLabel inline-block [transform-origin:50%_100%] will-change-transform">
+                                                {it.label}
+                                            </span>
                                         </a>
                                     </li>
                                 ))
                             ) : (
                                 <li className="sm-panel-itemWrap relative overflow-hidden leading-none" aria-hidden="true">
                                     <span className="sm-panel-item relative text-black font-semibold text-[4rem] cursor-pointer leading-none tracking-[-2px] uppercase transition-[background,color] duration-150 ease-linear inline-block no-underline pr-[1.4em]">
-                                        <span className="sm-panel-itemLabel inline-block [transform-origin:50%_100%] will-change-transform">No items</span>
+                                        <span className="sm-panel-itemLabel inline-block [transform-origin:50%_100%] will-change-transform">
+                                            No items
+                                        </span>
                                     </span>
                                 </li>
                             )}
@@ -423,7 +472,12 @@ const StaggeredMenu: React.FC<StaggeredMenuProps> = ({
                                 <ul className="sm-socials-list list-none m-0 p-0 flex flex-row items-center gap-4 flex-wrap" role="list">
                                     {socialItems.map((s, i) => (
                                         <li key={s.label + i} className="sm-socials-item">
-                                            <a href={s.link} target="_blank" rel="noopener noreferrer" className="sm-socials-link text-[1.2rem] font-medium text-[#111] no-underline relative inline-block py-[2px] transition-[color,opacity] duration-300 ease-linear">
+                                            <a
+                                                href={s.link}
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                                className="sm-socials-link text-[1.2rem] font-medium text-[#111] no-underline relative inline-block py-[2px] transition-[color,opacity] duration-300 ease-linear"
+                                            >
                                                 {s.label}
                                             </a>
                                         </li>
@@ -437,7 +491,7 @@ const StaggeredMenu: React.FC<StaggeredMenuProps> = ({
 
             <style>{`
 .sm-scope .staggered-menu-wrapper{position:relative;width:100%;height:100%;z-index:40}
-.sm-scope .staggered-menu-header{position:absolute;top:0;left:0;width:100%;display:flex;align-items:center;justify-content:space-between;padding:2em;background:transparent;pointer-events:auto;z-index:20}
+.sm-scope .staggered-menu-header{position:absolute;top:0;left:0;width:100%;display:flex;align-items:center;justify-content:space-between;padding:2em;background:transparent;pointer-events:none;z-index:20}
 .sm-scope .sm-logo{display:flex;align-items:center;user-select:none}
 .sm-scope .sm-logo-img{display:block;height:32px;width:auto;object-fit:contain}
 .sm-scope .sm-toggle{position:relative;display:inline-flex;align-items:center;gap:.3rem;background:transparent;border:none;cursor:pointer;color:#e9e9ef;font-weight:500;line-height:1;overflow:visible}
@@ -451,7 +505,7 @@ const StaggeredMenu: React.FC<StaggeredMenuProps> = ({
 .sm-scope .sm-icon-line{position:absolute;left:50%;top:50%;width:100%;height:2px;background:currentColor;border-radius:2px;transform:translate(-50%,-50%);will-change:transform}
 .sm-scope .sm-line{display:none!important}
 
-/* ← ширина панели/прелэйеров теперь через переменную --sm-panel-w */
+/* ширина панели/прелэйеров через переменную --sm-panel-w */
 .sm-scope .staggered-menu-panel{
   position:absolute;top:0;right:0;
   width: var(--sm-panel-w, clamp(260px,38vw,420px));
@@ -459,7 +513,8 @@ const StaggeredMenu: React.FC<StaggeredMenuProps> = ({
   background:white;
   backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
   display:flex;flex-direction:column;
-  padding:6em 2em 2em 2em;overflow-y:auto;z-index:10;pointer-events:auto
+  padding:6em 2em 2.5em 2em; /* немного больше низа по умолчанию */
+  overflow-y:auto;z-index:10;pointer-events:auto
 }
 .sm-scope [data-position='left'] .staggered-menu-panel{right:auto;left:0}
 .sm-scope .sm-prelayers{position:absolute;top:0;right:0;bottom:0;width: var(--sm-panel-w, clamp(260px,38vw,420px));pointer-events:none;z-index:5}
@@ -490,16 +545,23 @@ const StaggeredMenu: React.FC<StaggeredMenuProps> = ({
   .sm-scope .staggered-menu-wrapper[data-open] .sm-logo-img{filter:invert(100%)}
 }
 @media (max-width:640px){
-  .sm-scope .staggered-menu-panel{width:100%;left:0;right:0}
+  .sm-scope .staggered-menu-panel{
+    width:100%;left:0;right:0;
+    /* больше «воздуха» снизу: учитываем safe-area и запас */
+    padding:5em 1.25em calc(env(safe-area-inset-bottom, 0px) + 72px) 1.25em;
+  }
   .sm-scope .staggered-menu-wrapper[data-open] .sm-logo-img{filter:invert(100%)}
 
   /* меньше заголовки пунктов меню */
   .sm-scope .sm-panel-item{font-size:2.5rem}
-  /* прячем номера, чтобы не наезжали на текст */
-  .sm-scope .sm-panel-list[data-numbering] .sm-panel-item::after{display:none !important}
+  /* скрыть номера, чтобы не наезжали на текст */
+  .sm-scope .sm-panel-list[data-numbering] .sm-panel-item::after{display:none!important}
 
-  /* подтянуть socials выше и дать воздуху снизу */
-  .sm-scope .sm-socials{padding-bottom:24px; margin-bottom:12px}
+  /* подтянуть блок Socials и добавить запас снизу */
+  .sm-scope .sm-socials{
+    margin-top:auto;
+    padding-bottom:calc(env(safe-area-inset-bottom, 0px) + 24px);
+  }
   .sm-scope .sm-socials-link{font-size:1rem}
 }
       `}</style>
