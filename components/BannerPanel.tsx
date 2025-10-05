@@ -70,7 +70,8 @@ export default function BannerPanel({ index, activeIndex, setActive, data }: Pro
       onMouseLeave={onLeave}
       onClick={() => setActive(isActive ? null : index)}
       className="relative flex overflow-hidden rounded-xl bg-brand-card cursor-pointer
-                 ring-1 ring-white/5 shadow-[inset_0_1px_0_rgba(255,255,255,0.05)]"
+                 ring-1 ring-white/5 shadow-[inset_0_1px_0_rgba(255,255,255,0.05)]
+                 min-h-[44svh] sm:min-h-[44svh] xl:min-h-0 xl:h-auto"
       animate={{ flex: isActive ? 7 : 1 }}
       transition={{ type: 'tween', duration: 0.65, ease: easeSoft }}
       style={{ minWidth: 0 }}
@@ -131,21 +132,22 @@ export default function BannerPanel({ index, activeIndex, setActive, data }: Pro
         />
 
         <div className="relative h-full w-full flex items-center justify-center p-3 md:p-6">
+          {/* ⬇️ увеличили относительную высоту пака на мобильных/планшетах */}
           <Image
             src={data.packImage}
             alt={data.name + ' pack'}
             width={520}
             height={780}
-            className="h-[64%] md:h-[68%] w-auto select-none"
+            className="h-[78%] sm:h-[80%] md:h-[68%] w-auto select-none"
             draggable={false}
             onDragStart={(e) => e.preventDefault()}
           />
         </div>
       </motion.div>
 
-      {/* Overlay: title → description+tags → button (появляется перед паком) */}
+      {/* Overlay: title → description+tags → button */}
       <motion.div
-        className="absolute inset-x-0 bottom-0 z-30 px-4 md:px-6 pb-6 pt-20 md:pt-24"
+        className="absolute inset-x-0 bottom-0 z-30 px-4 md:px-6 pb-6 pt-24 md:pt-24"
         variants={overlayVariants}
         initial={false}
         animate={isActive ? 'visible' : 'hidden'}
