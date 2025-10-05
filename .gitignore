@@ -6,6 +6,5 @@ dist
 *.log
 .DS_Store
 # большие файлы — не коммитим
-public.zip
 *.zip
 .next
