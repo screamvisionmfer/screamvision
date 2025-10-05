@@ -39,3 +39,45 @@ body{
 
 @keyframes diag { from { background-position:0 0; } to { background-position:24px 0; } }
 .animate-diag { animation: diag .8s linear infinite; }
+@keyframes grainShift {
+  from {
+    transform: translate(0, 0);
+  }
+
+  to {
+    transform: translate(-256px, -256px);
+  }
+}
+
+.animate-grain {
+  animation: grainShift 1.6s steps(2) infinite;
+}
+
+@keyframes diag {
+  from {
+    background-position: 0 0;
+  }
+
+  to {
+    background-position: 24px 0;
+  }
+}
+
+.animate-diag {
+  animation: diag .8s linear infinite;
+}
+
+@keyframes shimmer {
+  from {
+    transform: translateX(-120%);
+  }
+
+  to {
+    transform: translateX(120%);
+  }
+}
+
+.animate-shimmer {
+  background: linear-gradient(75deg, transparent, rgba(255, 255, 255, .55), transparent);
+  animation: shimmer 1.4s ease-in-out infinite;
+}
