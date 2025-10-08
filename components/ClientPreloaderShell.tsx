@@ -1,45 +1,52 @@
-'use client';
-import React, { useCallback, useState } from 'react';
-import PreloaderOverlayPro from '@/components/PreloaderOverlayPro';
-import { usePagePreloader } from '@/src/hooks/usePagePreloader';
-import { PreloaderProvider } from '@/src/providers/PreloaderContext';
+"use client";
+import React, { createContext, useContext, useEffect, useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
+import PreloaderOverlayPro from "./PreloaderOverlayPro";
+import Header from "./Header";
 
-type Props = {
-  children: React.ReactNode;
-  assets?: string[];
-  minDurationMs?: number;
-  brand?: string;
-  firstVisitOnly?: boolean;
-};
+// === started context ===
+const StartedCtx = createContext(false);
+export const useStarted = () => useContext(StartedCtx);
 
-export default function ClientPreloaderShell({
-  children,
-  assets = [],
-  minDurationMs = 1000,
-  brand = '',
-  firstVisitOnly = false,
-}: Props) {
-  const skipKey = 'sv:preloader:seen';
-  const [skipped, setSkipped] = useState<boolean>(
-    () => firstVisitOnly && typeof window !== 'undefined' && sessionStorage.getItem(skipKey) === '1'
-  );
+export default function ClientPreloaderShell({ children }: { children?: React.ReactNode }) {
+  const [started, setStarted] = useState(false);
 
-  const { progress, done } = usePagePreloader({ assets, minDurationMs });
-
-  const handleSkip = useCallback(() => {
-    setSkipped(true);
-    try { if (firstVisitOnly) sessionStorage.setItem(skipKey, '1'); } catch { }
-  }, [firstVisitOnly]);
-
-  const isDone = skipped || done;
+  // метка на <html> и сброс возможных overflow
+  useEffect(() => {
+    if (started) {
+      document.documentElement.dataset.started = "1";
+      document.documentElement.style.overflow = "";
+      document.body.style.overflow = "";
+    } else {
+      delete document.documentElement.dataset.started;
+    }
+  }, [started]);
 
   return (
-    <PreloaderProvider value={{ done: isDone }}>
-      <PreloaderOverlayPro done={isDone} progress={progress} brand={brand} onSkip={handleSkip} />
-      {/* показываем контент, но саму анимацию запускает BannerRail в момент done=true */}
-      <div style={{ opacity: isDone ? 1 : 0, transition: 'opacity .45s ease-out' }}>
-        {children}
-      </div>
-    </PreloaderProvider>
+    <>
+      {/* Прелоудер с fade-out */}
+      <AnimatePresence mode="wait">
+        {!started && <PreloaderOverlayPro onDone={() => setStarted(true)} />}
+      </AnimatePresence>
+
+      {/* Основной слой: контент + плавный fade-in/blur-out */}
+      <StartedCtx.Provider value={started}>
+        <motion.div
+          className="relative z-10"
+          initial={{ opacity: 0, filter: "blur(6px)" }}
+          animate={{ opacity: started ? 1 : 0, filter: started ? "blur(0px)" : "blur(6px)" }}
+          transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1], delay: started ? 0.1 : 0 }}
+        >
+          <Header started={started} />
+          <main className="min-h-screen">
+            {children ?? (
+              <div className="p-10 text-center text-white/70">
+                Debug: children отсутствуют. Помести ClientPreloaderShell в <code>app/layout.tsx</code> и передай <code>{`{children}`}</code>.
+              </div>
+            )}
+          </main>
+        </motion.div>
+      </StartedCtx.Provider>
+    </>
   );
 }

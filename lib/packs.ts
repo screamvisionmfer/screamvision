@@ -1,48 +1,72 @@
-export type PackMeta = {
-  slug: string;
-  name: string;
-  description: string;
-  background: string;      // постер (фолбэк, если нет видео)
-  packImage: string;
-  titleImage?: string;
-  marketUrl: string;
-  tags?: string[];
-  video?: {
-    srcWebm?: string;
-    srcMp4?: string;
-    poster?: string;
-  };
-};
-
 export const PACKS: PackMeta[] = [
-  { slug: 'orden', name: 'ORDO MEMETICUS', short: 'ORDEN',
-    description: 'Stained‑glass saints, medieval rites, and memetic guardians. Legendary to Mythic rarities with interactive lore. ',
-    background: '/packs/ordo-memeticus-bg.png', packImage: '/packs/ordo-memeticus-pack.png',
-    titleImage: '/titles/ordo-memeticus-title.png', marketUrl: 'https://vibechain.com/market/ordo-memeticus', tags: ['Stained Glass'] },
- {
+  {
+    slug: 'orden',
+    name: 'ORDO MEMETICUS',
+    short: 'ORDEN',
+    description: 'Stained-glass saints and relics—covenant of Chain Keepers, Common→Mythic',
+    background: '/packs/ordo-memeticus-bg.png',
+    packImage: '/packs/ordo-memeticus-pack.png',
+    titleImage: '/titles/ordo-memeticus-title.png',
+    marketUrl: 'https://vibechain.com/market/ordo-memeticus',
+    tags: ['Stained Glass', 'Lore', 'Mythic'],
+  },
+  {
     slug: 'shitpixels-exe',
     name: 'SHITPIXELS.EXE',
-    description: 'Haunted suburban VHS vibes. Trick-or-treat meets stained-glass nightmares.',
-    background: '/packs/shitpixels-bg.jpg',       // важно: здесь изображение, не mp4
+    description: '2002 MS Paint chaos—dumb nostalgia, crooked lines, silly joy',
+    background: '/packs/shitpixels-bg.jpg',
     packImage: '/packs/shitpixels.png',
     titleImage: '/titles/shitpixels-title.png',
     marketUrl: 'https://vibechain.com/market/shitpixels-exe?ref=B3FLA1AGGOH2',
-    tags: ['Horror', 'VHS'],
+    tags: ['Nostalgia', 'MS Paint', 'Parody'],
     video: {
       srcWebm: '/packs/shitpixels-bg.webm',
-      srcMp4:  '/packs/shitpixels-bg.mp4',
-      poster:  '/packs/shitpixels-bg.jpg'
-    }
+      srcMp4: '/packs/shitpixels-bg.mp4',
+      poster: '/packs/shitpixels-bg.jpg',
+    },
   },
-  { slug: 'mfrst', name: 'MFERS STAINS', description: 'Album‑cover tributes remixed into meme culture. Loud, glossy, collectable.', titleImage: '/titles/mfers-title.png',
-    background: '/packs/mfers-bg.jpg', packImage: '/packs/mferstains.png', marketUrl: 'https://vibechain.com/market/mfers-stains?ref=B3FLA1AGGOH2', tags: ['Music','Tribute'] },
-  { slug: 'stray', name: 'STRAY TILL NINE', description: 'Analog horror frames. Lost tapes, dead pixels, and cursed polaroids.', titleImage: '/titles/stray-title.png',
-    background: '/packs/stray-bg.jpg', packImage: '/packs/straytillnine.png', marketUrl: 'https://vibechain.com/market/stray-till-nine?ref=B3FLA1AGGOH2', tags: ['Analog','Horror'] },
-  { slug: 'rcgva', name: 'RIZZ CODED GYATT', description: '3D/cartoon cut‑paper chaos with yellow/black energy. Punk caricature vibe.', titleImage: '/titles/rizz-title.png',
-    background: '/packs/rizz-bg.png', packImage: '/packs/rizz-pack.png', marketUrl: 'https://vibechain.com/market/rizz-coded-gyatt?ref=B3FLA1AGGOH2', tags: ['AI','Cartoon'] },
-  { slug: 'sbgc', name: 'SKULL BOARD GAME CLUB', description: 'Epic Spells energy: grotesque faces, battle chaos, and wide‑angle drama.', titleImage: '/titles/sbgc-title.png',
-    background: '/packs/sbgc-bg.jpg', packImage: '/packs/sbgc.png', marketUrl: 'https://vibechain.com/market/skullboardgameclub?ref=B3FLA1AGGOH2', tags: ['Battle','Epic Spells'], video: {
-      srcMp4:  '/packs/sbgc-bg.mp4',
-      poster:  '/packs/sbgc-bg.jpg'
-    }},
+  {
+    slug: 'mfrst',
+    name: 'MFERS STAINS',
+    description: 'Daily mfer sketches reborn as fridge-magnet memes',
+    titleImage: '/titles/mfers-title.png',
+    background: '/packs/mfers-bg.jpg',
+    packImage: '/packs/mferstains.png',
+    marketUrl: 'https://vibechain.com/market/mfers-stains?ref=B3FLA1AGGOH2',
+    tags: ['Hand-drawn', 'Meme', 'Collectible'],
+  },
+  {
+    slug: 'stray',
+    name: 'STRAY TILL NINE',
+    description: 'Hand-crafted tribute to Wieldlabs’ cat—analog spirit, nine lives',
+    titleImage: '/titles/stray-title.png',
+    background: '/packs/stray-bg.jpg',
+    packImage: '/packs/straytillnine.png',
+    marketUrl: 'https://vibechain.com/market/stray-till-nine?ref=B3FLA1AGGOH2',
+    tags: ['Tribute', 'Hand-crafted', 'Analog'],
+  },
+  {
+    slug: 'rcgva',
+    name: 'RIZZ CODED GYATT',
+    description: 'GTA-vibe street-meme dolls—clay/felt textures, AI-assisted grit',
+    titleImage: '/titles/rizz-title.png',
+    background: '/packs/rizz-bg.png',
+    packImage: '/packs/rizz-pack.png',
+    marketUrl: 'https://vibechain.com/market/rizz-coded-gyatt?ref=B3FLA1AGGOH2',
+    tags: ['Street', '3D Textures', 'AI-Assisted'],
+  },
+  {
+    slug: 'sbgc',
+    name: 'SKULL BOARD GAME CLUB',
+    description: 'Tabletop-punk meme cards—collect, trade, meme',
+    titleImage: '/titles/sbgc-title.png',
+    background: '/packs/sbgc-bg.jpg',
+    packImage: '/packs/sbgc.png',
+    marketUrl: 'https://vibechain.com/market/skullboardgameclub?ref=B3FLA1AGGOH2',
+    tags: ['Tabletop', 'Punk', 'Meme'],
+    video: {
+      srcMp4: '/packs/sbgc-bg.mp4',
+      poster: '/packs/sbgc-bg.jpg',
+    },
+  },
 ];
