@@ -30,26 +30,28 @@ const item = {
 export default function BannerRail({ packs }: { packs: PackMeta[] }) {
   const started = useStarted();
 
-  const isDesktop = useMediaQuery('(min-width: 1024px)');   // lg
-  const isTablet = useMediaQuery('(min-width: 768px) and (max-width: 1279.98px)');
+  // брейкпоинты/ориентации
+  const isDesktop = useMediaQuery('(min-width: 1024px)'); // lg
+  const isTabletPortrait = useMediaQuery('(min-width: 768px) and (max-width: 1279.98px) and (orientation: portrait)');
+  const isTabletLandscape = useMediaQuery('(min-width: 768px) and (orientation: landscape)');
 
   const [active, setActive] = useState<number | null>(null);
   const railRef = useRef<HTMLDivElement>(null);
 
-  // авто-открытие одной карточки после прелоудера
-  const autoOpenedRef = useRef(false);
+  // авто-открытие одной карточки после прелоадера
+  const openedRef = useRef(false);
   useEffect(() => {
-    if (!started || autoOpenedRef.current || packs.length === 0) return;
-    autoOpenedRef.current = true;
+    if (!started || openedRef.current || packs.length === 0) return;
+    openedRef.current = true;
     const idx = Math.floor(Math.random() * packs.length);
-    const t = setTimeout(() => setActive(prev => (prev === null ? idx : prev)), 350);
+    const t = setTimeout(() => setActive(p => (p === null ? idx : p)), 350);
     return () => clearTimeout(t);
   }, [started, packs.length]);
 
+  // клик/тап вне — закрыть
   useEffect(() => {
     function onDocTap(e: MouseEvent | TouchEvent) {
-      if (!railRef.current) return;
-      if (active === null) return;
+      if (!railRef.current || active === null) return;
       if (!railRef.current.contains(e.target as Node)) setActive(null);
     }
     document.addEventListener('click', onDocTap);
@@ -60,57 +62,70 @@ export default function BannerRail({ packs }: { packs: PackMeta[] }) {
     };
   }, [active]);
 
+  // «дыхание» ширин только в ландшафте/десктопе
   const flexFor = useMemo(() => {
-    if (isDesktop) return { base: 1.15, active: 1.8, idle: 0.7 };
-    if (isTablet) return { base: 1.0, active: 1.9, idle: 0.6 };
+    if (isDesktop || isTabletLandscape) return { base: 1.15, active: 1.8, idle: 0.7 };
     return { base: 1.0, active: 1.0, idle: 1.0 };
-  }, [isDesktop, isTablet]);
+  }, [isDesktop, isTabletLandscape]);
 
-  const handleEnter = (i: number) => { if (isDesktop) setActive(i); };
-  const handleLeave = () => { if (isDesktop) setActive(null); };
-  const handleTap = (i: number) => { if (!isDesktop) setActive(prev => (prev === i ? null : i)); };
+  const handleEnter = (i: number) => { if (isDesktop || isTabletLandscape) setActive(i); };
+  const handleLeave = () => { if (isDesktop || isTabletLandscape) setActive(null); };
+  const handleTap = (i: number) => { if (!(isDesktop || isTabletLandscape)) setActive(p => (p === i ? null : i)); };
 
+  // высоты: моб 46svh; планшет портрет 64svh; планшет ландшафт/десктоп — на полный контейнер
+  const heightCls = 'h-[46svh] md:portrait:h-[64svh] md:landscape:h-full lg:h-full';
+
+  // контейнер рельсы: колонка по умолчанию, лента в ландшафте/десктопе
   return (
     <motion.div
       ref={railRef}
       variants={container}
       initial="hidden"
       animate={started ? 'show' : 'hidden'}
-      className="flex w-full h-[100dvh] overflow-hidden flex-col lg:flex-row items-stretch justify-start gap-3 lg:gap-6"
+      className="
+        flex w-full h-full
+        flex-col md:landscape:flex-row lg:flex-row
+        items-stretch justify-start
+        gap-3 lg:gap-6
+        overflow-x-hidden
+        overflow-y-auto md:landscape:overflow-y-hidden lg:overflow-y-hidden
+      "
       onMouseLeave={handleLeave}
     >
       {packs.map((pack, i) => {
         const isActive = active === i;
 
-        // мобильный / планшет-портрет / планшет-ландшафт / десктоп
-        const heightCls = 'h-[44svh] md:portrait:h-[64svh] md:landscape:h-[100dvh] lg:h-[100dvh]';
+        // в колонке (моб/планшет-портрет) — карточка на всю ширину и не сжимается
+        // в ленте (ландшафт/десктоп) — прежнее «дыхание»
+        const inRow = isDesktop || isTabletLandscape;
+        const flexStyle = inRow
+          ? undefined
+          : { flex: 'none', width: '100%' };
 
-        // На моб/планшете запрещаем рост по главной оси (фиксируем высоту).
-        // На десктопе — динамическая ширина.
-        const desktopFlexCls =
-          isDesktop
-            ? (active === null
-              ? 'lg:[flex:1.15_1_0%]'
-              : isActive
-                ? 'lg:[flex:2.8_1_0%]'
-                : 'lg:[flex:0.7_1_0%]')
-            : 'flex-none';
+        const desktopFlexCls = inRow
+          ? (active === null
+            ? 'md:landscape:[flex:1.15_1_0%] lg:[flex:1.15_1_0%]'
+            : isActive
+              ? 'md:landscape:[flex:2.8_1_0%] lg:[flex:2.8_1_0%]'
+              : 'md:landscape:[flex:0.7_1_0%] lg:[flex:0.7_1_0%]')
+          : 'flex-none';
 
         return (
           <motion.div
             key={(pack as any).slug ?? i}
             variants={item}
-            custom={isDesktop}
+            custom={inRow}
             onMouseEnter={() => handleEnter(i)}
             onClick={() => handleTap(i)}
             onTouchStart={() => handleTap(i)}
             className={[
-              'min-w-0',
+              'w-full min-h-0',
               heightCls,
-              'overflow-hidden',                 // не даём внутренностям раздувать высоту
+              'overflow-hidden',
               'transition-[flex] duration-500 ease-out',
               desktopFlexCls,
             ].join(' ')}
+            style={flexStyle}
           >
             <BannerPanel
               index={i}
