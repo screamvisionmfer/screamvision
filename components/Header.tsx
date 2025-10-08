@@ -3,7 +3,7 @@ import StaggeredMenu from './StaggeredMenu';
 
 const menuItems = [
     { label: 'Home', ariaLabel: 'Go to home page', link: '/' },
-    { label: 'VibeMarket', ariaLabel: 'Cards marketplace', link: '#' },
+    { label: 'VibeMarket', ariaLabel: 'Cards marketplace', link: 'https://vibechain.com/market?ref=B3FLA1AGGOH2' },
     // { label: 'About', ariaLabel: 'Learn about us', link: '/about' },
     // { label: 'Contact', ariaLabel: 'Get in touch', link: '/contact' },
 ];

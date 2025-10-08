@@ -222,7 +222,7 @@ export default function BannerPanel({ index, activeIndex, setActive, data }: Pro
 
       {/* overlay text */}
       <motion.div
-        className="absolute inset-x-0 bottom-0 z-30 px-4 md:px-6 pb-6 pt-24 md:pt-24"
+        className="absolute inset-x-0 bottom-0 z-30 px-4 md:px-6 pb-5 pt-20 md:pt-16 md:landscape:pt-10"
         variants={overlayVariants}
         initial={false}
         animate={isActive ? 'visible' : 'hidden'}

@@ -30,22 +30,19 @@ const item = {
 export default function BannerRail({ packs }: { packs: PackMeta[] }) {
   const started = useStarted();
 
-  const isDesktop = useMediaQuery('(min-width: 1280px)');
+  const isDesktop = useMediaQuery('(min-width: 1024px)');   // lg
   const isTablet = useMediaQuery('(min-width: 768px) and (max-width: 1279.98px)');
 
   const [active, setActive] = useState<number | null>(null);
   const railRef = useRef<HTMLDivElement>(null);
 
-  // ── NEW: авто-открытие случайной карточки после прелоудера
+  // авто-открытие одной карточки после прелоудера
   const autoOpenedRef = useRef(false);
   useEffect(() => {
     if (!started || autoOpenedRef.current || packs.length === 0) return;
     autoOpenedRef.current = true;
     const idx = Math.floor(Math.random() * packs.length);
-    const t = setTimeout(() => {
-      // не перетираем, если пользователь уже успел что-то открыть
-      setActive(prev => (prev === null ? idx : prev));
-    }, 350); // небольшая пауза после fade-in
+    const t = setTimeout(() => setActive(prev => (prev === null ? idx : prev)), 350);
     return () => clearTimeout(t);
   }, [started, packs.length]);
 
@@ -79,24 +76,25 @@ export default function BannerRail({ packs }: { packs: PackMeta[] }) {
       variants={container}
       initial="hidden"
       animate={started ? 'show' : 'hidden'}
-      className="flex w-full h-full flex-col xl:flex-row items-stretch justify-start gap-4 xl:gap-6"
+      className="flex w-full h-full flex-col lg:flex-row items-stretch justify-start gap-3 lg:gap-6"
       onMouseLeave={handleLeave}
     >
       {packs.map((pack, i) => {
         const isActive = active === i;
 
-        // компактнее на мобиле, средне на планшете, фулл на десктопе
-        const heightCls = 'h-[42svh] md:h-[64svh] xl:h-screen';
+        // высота: мобильный, планшет-портрет, планшет-ландшафт, десктоп
+        const heightCls =
+          'h-[44svh] md:portrait:h-[64svh] md:landscape:h-[100svh] lg:h-[100svh]';
 
-        // На моб/планшете не даем элементу расти по главной оси (flex-none).
-        // На десктопе — динамическая ширина по состоянию.
+        // На моб/планшете запрещаем рост по главной оси (фиксируем высоту).
+        // На десктопе — динамическая ширина.
         const desktopFlexCls =
           isDesktop
             ? (active === null
-              ? 'xl:[flex:1.15_1_0%]'
+              ? 'lg:[flex:1.15_1_0%]'
               : isActive
-                ? 'xl:[flex:2.8_1_0%]'
-                : 'xl:[flex:0.7_1_0%]')
+                ? 'lg:[flex:2.8_1_0%]'
+                : 'lg:[flex:0.7_1_0%]')
             : 'flex-none';
 
         return (
