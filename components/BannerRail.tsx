@@ -76,15 +76,14 @@ export default function BannerRail({ packs }: { packs: PackMeta[] }) {
       variants={container}
       initial="hidden"
       animate={started ? 'show' : 'hidden'}
-      className="flex w-full h-full flex-col lg:flex-row items-stretch justify-start gap-3 lg:gap-6"
+      className="flex w-full h-[100dvh] overflow-hidden flex-col lg:flex-row items-stretch justify-start gap-3 lg:gap-6"
       onMouseLeave={handleLeave}
     >
       {packs.map((pack, i) => {
         const isActive = active === i;
 
-        // высота: мобильный, планшет-портрет, планшет-ландшафт, десктоп
-        const heightCls =
-          'h-[44svh] md:portrait:h-[64svh] md:landscape:h-[100svh] lg:h-[100svh]';
+        // мобильный / планшет-портрет / планшет-ландшафт / десктоп
+        const heightCls = 'h-[44svh] md:portrait:h-[64svh] md:landscape:h-[100dvh] lg:h-[100dvh]';
 
         // На моб/планшете запрещаем рост по главной оси (фиксируем высоту).
         // На десктопе — динамическая ширина.
@@ -107,8 +106,8 @@ export default function BannerRail({ packs }: { packs: PackMeta[] }) {
             onTouchStart={() => handleTap(i)}
             className={[
               'min-w-0',
-              'mb-3 md:mb-0',
               heightCls,
+              'overflow-hidden',                 // не даём внутренностям раздувать высоту
               'transition-[flex] duration-500 ease-out',
               desktopFlexCls,
             ].join(' ')}
