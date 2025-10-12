@@ -1,19 +1,32 @@
 export const PACKS: PackMeta[] = [
+     {
+    slug: 'strayclub',
+    name: 'STRAY CLUB',
+    short: 'strclb',
+    description: 'Unofficial Wieldlabs cat spin-off — hand-drawn parody of cult films and shows.',
+    background: '/packs/strayclubbg.jpg',
+    packImage: '/packs/strayclub.png',
+    titleImage: '/titles/strayclub-title.png',
+    marketUrl: 'https://vibechain.com/market/stray-club?ref=B3FLA1AGGOH2',
+    tags: ['Tribute', 'Parody', 'Pop Culture'],
+  },
+  
   {
     slug: 'orden',
     name: 'ORDO MEMETICUS',
     short: 'ORDEN',
-    description: 'Stained-glass saints and relics—covenant of Chain Keepers, Common→Mythic',
+    description: 'Stained-glass saints and relics—covenant of Chain Keepers, Common→Mythic.',
     background: '/packs/ordo-memeticus-bg.png',
     packImage: '/packs/ordo-memeticus-pack.png',
     titleImage: '/titles/ordo-memeticus-title.png',
     marketUrl: 'https://vibechain.com/market/ordo-memeticus',
     tags: ['Stained Glass', 'Lore', 'Mythic'],
   },
+
   {
     slug: 'shitpixels-exe',
     name: 'SHITPIXELS.EXE',
-    description: '2002 MS Paint chaos—dumb nostalgia, crooked lines, silly joy',
+    description: '2002 MS Paint chaos—dumb nostalgia, crooked lines, silly joy.',
     background: '/packs/shitpixels-bg.jpg',
     packImage: '/packs/shitpixels.png',
     titleImage: '/titles/shitpixels-title.png',
@@ -28,7 +41,7 @@ export const PACKS: PackMeta[] = [
   {
     slug: 'mfrst',
     name: 'MFERS STAINS',
-    description: 'Daily mfer sketches reborn as fridge-magnet memes',
+    description: 'Daily mfer sketches reborn as fridge-magnet memes.',
     titleImage: '/titles/mfers-title.png',
     background: '/packs/mfers-bg.jpg',
     packImage: '/packs/mferstains.png',
@@ -38,7 +51,7 @@ export const PACKS: PackMeta[] = [
   {
     slug: 'stray',
     name: 'STRAY TILL NINE',
-    description: 'Hand-crafted tribute to Wieldlabs’ cat—analog spirit, nine lives',
+    description: 'Hand-crafted tribute to Wieldlabs’ cat—analog spirit, nine lives.',
     titleImage: '/titles/stray-title.png',
     background: '/packs/stray-bg.jpg',
     packImage: '/packs/straytillnine.png',
@@ -48,7 +61,7 @@ export const PACKS: PackMeta[] = [
   {
     slug: 'rcgva',
     name: 'RIZZ CODED GYATT',
-    description: 'GTA-vibe street-meme dolls—clay/felt textures, AI-assisted grit',
+    description: 'GTA-vibe street-meme dolls—clay/felt textures, AI-assisted grit.',
     titleImage: '/titles/rizz-title.png',
     background: '/packs/rizz-bg.png',
     packImage: '/packs/rizz-pack.png',
@@ -58,7 +71,7 @@ export const PACKS: PackMeta[] = [
   {
     slug: 'sbgc',
     name: 'SKULL BOARD GAME CLUB',
-    description: 'Tabletop-punk meme cards—collect, trade, meme',
+    description: 'Tabletop-punk meme cards—collect, trade, meme.',
     titleImage: '/titles/sbgc-title.png',
     background: '/packs/sbgc-bg.jpg',
     packImage: '/packs/sbgc.png',
