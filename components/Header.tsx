@@ -7,6 +7,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 type MenuItem = { label: string; aria: string; href: string };
 const MENU: MenuItem[] = [
     { label: 'Home', aria: 'Go to home page', href: '/' },
+    // { label: 'Collections', aria: 'Browse collections', href: '/collections' },
     { label: 'VibeMarket', aria: 'Open marketplace', href: 'https://vibechain.com/market?ref=B3FLA1AGGOH2' },
 ];
 

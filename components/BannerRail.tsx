@@ -22,8 +22,7 @@ const container = {
   show: { transition: { staggerChildren: 0.12, delayChildren: 0.05 } },
 };
 const item = {
-  hidden: (isDesktop: boolean) =>
-    isDesktop ? { opacity: 0, x: -24 } : { opacity: 0, y: 24 },
+  hidden: (isRow: boolean) => (isRow ? { opacity: 0, x: -24 } : { opacity: 0, y: 24 }),
   show: { opacity: 1, x: 0, y: 0, transition: { duration: 0.55, ease: [0.22, 1, 0.36, 1] } },
 };
 
@@ -32,11 +31,16 @@ export default function BannerRail({ packs }: { packs: PackMeta[] }) {
 
   // брейкпоинты/ориентации
   const isDesktop = useMediaQuery('(min-width: 1024px)'); // lg
-  const isTabletPortrait = useMediaQuery('(min-width: 768px) and (max-width: 1279.98px) and (orientation: portrait)');
+  const isTabletPortrait = useMediaQuery(
+    '(min-width: 768px) and (max-width: 1279.98px) and (orientation: portrait)'
+  );
   const isTabletLandscape = useMediaQuery('(min-width: 768px) and (orientation: landscape)');
 
   const [active, setActive] = useState<number | null>(null);
   const railRef = useRef<HTMLDivElement>(null);
+
+  // режим раскладки: лента только в landscape или на большом десктопе
+  const inRow = isTabletLandscape || (isDesktop && !isTabletPortrait);
 
   // авто-открытие одной карточки после прелоадера
   const openedRef = useRef(false);
@@ -44,7 +48,7 @@ export default function BannerRail({ packs }: { packs: PackMeta[] }) {
     if (!started || openedRef.current || packs.length === 0) return;
     openedRef.current = true;
     const idx = Math.floor(Math.random() * packs.length);
-    const t = setTimeout(() => setActive(p => (p === null ? idx : p)), 350);
+    const t = setTimeout(() => setActive((p) => (p === null ? idx : p)), 350);
     return () => clearTimeout(t);
   }, [started, packs.length]);
 
@@ -64,50 +68,48 @@ export default function BannerRail({ packs }: { packs: PackMeta[] }) {
 
   // «дыхание» ширин только в ландшафте/десктопе
   const flexFor = useMemo(() => {
-    if (isDesktop || isTabletLandscape) return { base: 1.15, active: 1.8, idle: 0.7 };
+    if (inRow) return { base: 1.15, active: 2.6, idle: 0.6 };
     return { base: 1.0, active: 1.0, idle: 1.0 };
-  }, [isDesktop, isTabletLandscape]);
+  }, [inRow]);
 
-  const handleEnter = (i: number) => { if (isDesktop || isTabletLandscape) setActive(i); };
-  const handleLeave = () => { if (isDesktop || isTabletLandscape) setActive(null); };
-  const handleTap = (i: number) => { if (!(isDesktop || isTabletLandscape)) setActive(p => (p === i ? null : i)); };
+  const handleEnter = (i: number) => { if (inRow) setActive(i); };
+  const handleLeave = () => { if (inRow) setActive(null); };
+  const handleTap = (i: number) => { if (!inRow) setActive((p) => (p === i ? null : i)); };
 
-  // высоты: моб 46svh; планшет портрет 64svh; планшет ландшафт/десктоп — на полный контейнер
-  const heightCls = 'h-[46svh] md:portrait:h-[64svh] md:landscape:h-full lg:h-full';
+  // высоты карточек:
+  // - в ряду: на всю высоту контейнера
+  // - в колонке (портрет): авто-высота, чтобы страница скроллилась нативно
+  const heightCls = inRow ? 'md:landscape:h-full lg:h-full' : 'h-auto';
 
-  // контейнер рельсы: колонка по умолчанию, лента в ландшафте/десктопе
   return (
     <motion.div
       ref={railRef}
       variants={container}
       initial="hidden"
       animate={started ? 'show' : 'hidden'}
-      className="
-        flex w-full h-full
-        flex-col md:landscape:flex-row lg:flex-row
-        items-stretch justify-start
-        gap-3 lg:gap-6
-        overflow-x-hidden
-        overflow-y-auto md:landscape:overflow-y-hidden lg:overflow-y-hidden
-      "
+      className={[
+        'flex w-full',
+        inRow ? 'h-full overflow-y-hidden' : 'h-auto overflow-visible',
+        'flex-col md:landscape:flex-row lg:flex-row',
+        'items-stretch justify-start',
+        'gap-3 lg:gap-6',
+        'overflow-x-hidden',
+        'py-2', // небольшое дыхание в портрете
+      ].join(' ')}
       onMouseLeave={handleLeave}
     >
       {packs.map((pack, i) => {
         const isActive = active === i;
 
-        // в колонке (моб/планшет-портрет) — карточка на всю ширину и не сжимается
-        // в ленте (ландшафт/десктоп) — прежнее «дыхание»
-        const inRow = isDesktop || isTabletLandscape;
-        const flexStyle = inRow
-          ? undefined
-          : { flex: 'none', width: '100%' };
+        // в колонке — карточка на всю ширину и не сжимается; в ленте — «дыхание»
+        const flexStyle = inRow ? undefined : { flex: 'none', width: '100%' };
 
         const desktopFlexCls = inRow
-          ? (active === null
-            ? 'md:landscape:[flex:1.15_1_0%] lg:[flex:1.15_1_0%]'
+          ? active === null
+            ? 'md:landscape:[flex:1.1_1_0%] lg:[flex:1.15_1_0%]'
             : isActive
-              ? 'md:landscape:[flex:2.8_1_0%] lg:[flex:2.8_1_0%]'
-              : 'md:landscape:[flex:0.7_1_0%] lg:[flex:0.7_1_0%]')
+              ? 'md:landscape:[flex:3.4_1_0%] lg:[flex:3.4_1_0%]'
+              : 'md:landscape:[flex:0.55_1_0%] lg:[flex:0.55_1_0%]'
           : 'flex-none';
 
         return (
