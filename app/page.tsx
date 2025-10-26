@@ -3,7 +3,7 @@ import { PACKS } from '@/lib/packs';
 
 export default function Page() {
   return (
-    <main className="relative w-screen h-dvh overflow-hidden bg-black">
+    <main className="relative w-screen min-h-dvh overflow-x-hidden bg-black">
       <BannerRail packs={PACKS} />
     </main>
   );

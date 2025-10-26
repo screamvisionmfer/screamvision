@@ -39,8 +39,8 @@ export default function BannerRail({ packs }: { packs: PackMeta[] }) {
   const [active, setActive] = useState<number | null>(null);
   const railRef = useRef<HTMLDivElement>(null);
 
-  // режим раскладки: лента только в landscape или на большом десктопе
-  const inRow = isTabletLandscape || (isDesktop && !isTabletPortrait);
+  // md+ всегда «лента» в ряд; телефон — колонка (страница скроллится нативно)
+  const inRow = isDesktop || isTabletLandscape || isTabletPortrait;
 
   // авто-открытие одной карточки после прелоадера
   const openedRef = useRef(false);
@@ -66,9 +66,9 @@ export default function BannerRail({ packs }: { packs: PackMeta[] }) {
     };
   }, [active]);
 
-  // «дыхание» ширин только в ландшафте/десктопе
+  // «дыхание» ширин только в ряду
   const flexFor = useMemo(() => {
-    if (inRow) return { base: 1.15, active: 2.6, idle: 0.6 };
+    if (inRow) return { base: 1.2, active: 2.6, idle: 0.9 };
     return { base: 1.0, active: 1.0, idle: 1.0 };
   }, [inRow]);
 
@@ -76,10 +76,9 @@ export default function BannerRail({ packs }: { packs: PackMeta[] }) {
   const handleLeave = () => { if (inRow) setActive(null); };
   const handleTap = (i: number) => { if (!inRow) setActive((p) => (p === i ? null : i)); };
 
-  // высоты карточек:
-  // - в ряду: на всю высоту контейнера
-  // - в колонке (портрет): авто-высота, чтобы страница скроллилась нативно
-  const heightCls = inRow ? 'md:landscape:h-full lg:h-full' : 'h-auto';
+  // высоты карточек: на телефоне — «высокие плитки» и естественный скролл страницы;
+  // на md+ — 100% высоты ленты.
+  const heightCls = inRow ? 'md:h-full' : 'h-[46svh]';
 
   return (
     <motion.div
@@ -89,27 +88,26 @@ export default function BannerRail({ packs }: { packs: PackMeta[] }) {
       animate={started ? 'show' : 'hidden'}
       className={[
         'flex w-full',
-        inRow ? 'h-full overflow-y-hidden' : 'h-auto overflow-visible',
-        'flex-col md:landscape:flex-row lg:flex-row',
+        inRow
+          ? 'h-[100svh] overflow-y-hidden overflow-x-hidden md:flex-row'
+          : 'h-auto overflow-visible flex-col', // ← телефон: НИЧЕГО не блокируем
         'items-stretch justify-start',
         'gap-3 lg:gap-6',
-        'overflow-x-hidden',
-        'py-2', // небольшое дыхание в портрете
       ].join(' ')}
       onMouseLeave={handleLeave}
     >
       {packs.map((pack, i) => {
         const isActive = active === i;
 
-        // в колонке — карточка на всю ширину и не сжимается; в ленте — «дыхание»
+        // телефон — по одной карточке на строку; md+ — «дыхание»
         const flexStyle = inRow ? undefined : { flex: 'none', width: '100%' };
 
         const desktopFlexCls = inRow
           ? active === null
-            ? 'md:landscape:[flex:1.1_1_0%] lg:[flex:1.15_1_0%]'
+            ? 'md:[flex:1.2_1_0%] lg:[flex:1.2_1_0%]'
             : isActive
-              ? 'md:landscape:[flex:3.4_1_0%] lg:[flex:3.4_1_0%]'
-              : 'md:landscape:[flex:0.55_1_0%] lg:[flex:0.55_1_0%]'
+              ? 'md:[flex:1.6_1_0%] lg:[flex:4.6_1_0%]'
+              : 'md:[flex:0.4_1_0%] lg:[flex:0.4_1_0%]'
           : 'flex-none';
 
         return (
