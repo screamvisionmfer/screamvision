@@ -102,3 +102,12 @@ body{
   background: linear-gradient(75deg, transparent, rgba(255, 255, 255, .55), transparent);
   animation: shimmer 1.4s ease-in-out infinite;
 }
+html {
+  scrollbar-gutter: stable both-edges;
+}
+
+body {
+  overflow-y: scroll;
+}
+
+/* fallback для браузеров без scrollbar-gutter */

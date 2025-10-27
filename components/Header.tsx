@@ -7,7 +7,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 type MenuItem = { label: string; aria: string; href: string };
 const MENU: MenuItem[] = [
     { label: 'Home', aria: 'Go to home page', href: '/' },
-    // { label: 'Collections', aria: 'Browse collections', href: '/collections' },
+    { label: 'Collections', aria: 'Browse collections', href: '/collections' },
     { label: 'VibeMarket', aria: 'Open marketplace', href: 'https://vibechain.com/market?ref=B3FLA1AGGOH2' },
 ];
 
@@ -45,14 +45,15 @@ export default function Header() {
         />
     );
 
-    // запрет скролла + закрытие по Esc
-    useEffect(() => {
-        const prev = document.body.style.overflow;
-        document.body.style.overflow = open ? 'hidden' : prev || '';
-        const onKey = (e: KeyboardEvent) => { if (open && e.key === 'Escape') setOpen(false); };
-        window.addEventListener('keydown', onKey);
-        return () => { document.body.style.overflow = prev || ''; window.removeEventListener('keydown', onKey); };
-    }, [open]);
+    // запрет скролла ТОЛЬКО когда меню открыто + закрытие по Esc
+useEffect(() => {
+    if (!open) return;
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    const onKey = (e: KeyboardEvent) => { if (open && e.key === 'Escape') setOpen(false); };
+    window.addEventListener('keydown', onKey);
+    return () => { document.body.style.overflow = prev || ''; window.removeEventListener('keydown', onKey); };
+}, [open]);
 
     // анимации (мягкие и длиннее)
     const overlayVariants = {
